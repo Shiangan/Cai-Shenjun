@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <title>江媽名明珠 夫人 圓滿追思</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;500;900&display=swap" rel="stylesheet">
+    <style>
+        /* [核心封裝] 變數混淆與硬化佈局 */
+        :root { 
+            --pearl: #f9f8f6; --ink: #1a1a1a; --gold: #8d764d; --clay: #edeae4;
+            --safe-t: env(safe-area-inset-top); --safe-b: env(safe-area-inset-bottom);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; 
+            background: #000; font-family: 'Noto Serif TC', serif; 
+        }
+
+        /* 策展級畫廊容器 */
+        #pearl-app {
+            width: 100%; max-width: 480px; margin: 0 auto; height: 100%;
+            background: var(--pearl); display: flex; flex-direction: column;
+            position: relative; box-shadow: 0 0 80px rgba(0,0,0,0.5);
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+        }
+
+        /* 非對稱頁首設計 */
+        header {
+            padding: calc(60px + var(--safe-t)) 40px 20px; position: relative;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+        }
+        header::before { 
+            content: ""; position: absolute; top: 50px; left: 0; width: 30px; height: 1px; background: var(--gold); 
+        }
+        .v-title { font-size: 2.5rem; font-weight: 900; letter-spacing: 0.8rem; line-height: 1.2; color: var(--ink); }
+        .v-sub { font-size: 0.65rem; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; display: block; }
+
+        /* 滑動視窗硬化 */
+        .scroller { 
+            flex: 1; overflow-y: scroll; scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch; perspective: 1000px;
+        }
+        .scroller::-webkit-scrollbar { display: none; }
+        
+        .layer { display: none; padding: 0 40px 180px; animation: layerFlow 1.8s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+        .layer.active { display: block; }
+        @keyframes layerFlow { from { opacity: 0; filter: blur(15px); transform: scale(1.05); } to { opacity: 1; filter: blur(0); transform: scale(1); } }
+
+        /* 特色組件：珠寶展示架 */
+        .art-box { margin: 40px 0; position: relative; border-radius: 2px; }
+        .art-box img { width: 100%; display: block; box-shadow: 0 30px 60px rgba(0,0,0,0.07); position: relative; z-index: 2; }
+        .art-box::after { 
+            content: "PEARL"; position: absolute; -webkit-text-stroke: 1px rgba(141,118,77,0.1); 
+            color: transparent; font-size: 5rem; font-weight: 900; bottom: -20px; right: -20px; z-index: 1;
+        }
+
+        /* 書道與文字 */
+        .prose { font-size: 1.25rem; line-height: 2.8; color: #333; text-align: justify; }
+        .prose b { color: var(--gold); font-weight: 900; background: linear-gradient(180deg,transparent 80%, rgba(141,118,77,0.1) 0); }
+        .vertical-shodo { 
+            writing-mode: vertical-rl; font-size: 2.2rem; height: 260px; margin: 80px auto; 
+            letter-spacing: 15px; font-weight: 500; border-left: 0.5px solid var(--clay); padding-left: 20px;
+        }
+
+        /* 資訊卡片：極簡美學 */
+        .info-cell { margin-bottom: 60px; }
+        .tag-line { font-size: 0.75rem; color: var(--gold); letter-spacing: 4px; display: block; margin-bottom: 25px; font-weight: 600; }
+        .content-card { background: #fff; padding: 35px 25px; border: 1px solid var(--clay); position: relative; }
+        .content-card h4 { font-size: 1.4rem; color: var(--gold); margin-bottom: 10px; }
+        
+        /* 網格系統：像素鎖定 */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .grid-item { background: #fff; padding: 5px; border: 0.5px solid var(--clay); font-size: 0.65rem; color: #999; text-align: center; }
+        .grid-item img { width: 100%; display: block; margin-bottom: 8px; }
+
+        /* 底部導航：沉浸式懸浮 Dock */
+        nav {
+            position: absolute; bottom: 0; width: 100%;
+            padding: 15px 25px calc(15px + var(--safe-b));
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.03);
+        }
+        .nav-link { 
+            flex: 1; text-align: center; color: #c0bab2; transition: 0.5s; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+        }
+        .nav-link.active { color: var(--ink); transform: translateY(-5px); }
+        .nav-link svg { width: 22px; height: 22px; }
+        .nav-link span { font-size: 0.7rem; font-weight: 900; letter-spacing: 1px; }
+
+        /* 行動按鈕 */
+        .cta-gold { 
+            display: block; width: 100%; padding: 22px; background: var(--ink); color: #fff; 
+            text-align: center; text-decoration: none; letter-spacing: 4px; font-size: 0.9rem;
+            margin-top: 25px; transition: 0.4s;
+        }
+        .cta-gold:active { background: var(--gold); }
+
+        /* 全屏燈箱 */
+        #viewer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; justify-content: center; align-items: center; padding: 30px; }
+        #viewer img { max-width: 100%; max-height: 80%; object-fit: contain; animation: zoomIn 0.4s ease; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false"> <div id="pearl-app">
+    <header>
+        <span class="v-sub">Eternal Memory of 1935 - 2025</span>
+        <div class="v-title">江媽名明珠<br>夫人</div>
+    </header>
+
+    <div class="scroller" id="scroll-root">
+        
+        <section id="layer-1" class="layer active">
+            <div class="art-box" onclick="zoom('image/IMG_6896.jpeg')">
+                <img src="image/IMG_6896.jpeg" alt="江夫人">
+            </div>
+            <div class="prose">
+                致每一位掛念母親的親友：<br><br>
+                我們的摯愛 <b>江媽名明珠 夫人</b><br>
+                於 民國 114 年 12 月 21 日<br>
+                在歲月的恬靜中圓滿了這一生的修行。<br><br>
+                她如同她的名字，溫潤如明珠，<br>
+                在平凡的生活中散發著最體面的光采。<br>
+                感謝您，陪她走過這段燦爛的旅程。
+            </div>
+            <div class="vertical-shodo">德芬芳馨 永誌心中</div>
+            <p style="text-align:center; color:var(--gold); font-weight:900; letter-spacing:4px; margin-top:30px;">全體子女 敬啟</p>
+            <div class="info-cell" style="margin-top:100px;">
+                <span class="tag-line">正式訃告書錄</span>
+                <div class="art-box" style="padding:10px; background:#fff;"><img src="image/image.png" onclick="zoom(this.src)"></div>
+            </div>
+        </section>
+
+        <section id="layer-2" class="layer">
+            <div class="info-cell">
+                <span class="tag-line">追思會場資訊</span>
+                <div class="content-card">
+                    <h4>115年1月5日 (一)</h4>
+                    <p style="font-weight:900; color:#000;">上午 08:30 公奠儀式</p>
+                    <p style="font-size:0.9rem;">台北市立懷愛館 (至仁四廳)</p>
+                    <div class="grid-2">
+                        <div class="grid-item"><img src="image/交通00001.GIF" onclick="zoom(this.src)">地圖 A</div>
+                        <div class="grid-item"><img src="image/交通00002.GIF" onclick="zoom(this.src)">地圖 B</div>
+                    </div>
+                    <a href="https://maps.google.com/?q=台北市立懷愛館" class="cta-gold">📍 開啟 Google 地圖導航</a>
+                </div>
+            </div>
+            <div class="info-cell">
+                <span class="tag-line">大眾運輸指引</span>
+                <p style="font-size:0.9rem; margin-bottom:15px; color:#666;">捷運公館、六張犁站備有「懷恩專車」接駁。</p>
+                <img src="image/捷運轉懷恩專車.png" style="width:100%; border:1px solid var(--clay);" onclick="zoom(this.src)">
+                <div class="grid-3">
+                    <div class="grid-item"><img src="image/S31路線.png" onclick="zoom(this.src)">S31</div>
+                    <div class="grid-item"><img src="image/S33路線.png" onclick="zoom(this.src)">S33</div>
+                    <div class="grid-item"><img src="image/S35路線.png" onclick="zoom(this.src)">S35</div>
+                </div>
+                <img src="image/搭公車資訊.png" style="width:100%;" onclick="zoom(this.src)">
+            </div>
+            <div class="info-cell">
+                <span class="tag-line">自行開車與停車</span>
+                <div class="grid-item" style="margin-bottom:10px;"><img src="image/停車場資訊.png" onclick="zoom(this.src)"></div>
+                <div class="grid-item"><img src="image/S35停車場接駁.png" onclick="zoom(this.src)"></div>
+            </div>
+        </section>
+
+        <section id="layer-3" class="layer">
+            <div class="info-cell">
+                <span class="tag-line">家屬溫馨叮嚀</span>
+                <div class="content-card" style="line-height:2.6;">
+                    <p><b>關於奠儀</b><br>家屬感念厚誼，現場懇辭奠儀（白包）。</p>
+                    <div style="height:1px; background:var(--clay); margin:20px 0;"></div>
+                    <p><b>關於禮儀</b><br>請將手機調整為靜音，維持會場肅穆。</p>
+                    <div style="height:1px; background:var(--clay); margin:20px 0;"></div>
+                    <p><b>關於場所</b><br>1/5 請直接前往懷愛館，臥龍街靈堂僅至 1/4。</p>
+                </div>
+            </div>
+            <div class="info-cell">
+                <span class="tag-line">弔唁靈堂 (至 1/4 止)</span>
+                <p style="font-size:0.85rem; color:#888; margin-bottom:15px;">大安區臥龍街 188 巷</p>
+                <img src="image/豎靈圖.jpg" style="width:100%;" onclick="zoom(this.src)">
+                <a href="https://maps.google.com/?q=台北市大安區臥龍街188巷" class="cta-gold" style="background:none; border:1px solid #1a1a1a; color:#1a1a1a;">📍 導航至臥龍街靈堂</a>
+            </div>
+        </section>
+
+        <section id="layer-4" class="layer">
+            <div class="prose" style="text-align:center;">
+                感謝各界親友的心意。<br>
+                為求會場整體風格素雅一致，<br>
+                家屬規劃了統一樣式的花禮，<br>
+                您的祝福，我們深切領受。
+            </div>
+            <div class="grid-3" style="margin-top:40px;">
+                <div class="grid-item"><img src="image/flower_E.png" onclick="zoom(this.src)">款式 E</div>
+                <div class="grid-item"><img src="image/flower_G.png" onclick="zoom(this.src)">款式 G</div>
+                <div class="grid-item"><img src="image/flower_H.png" onclick="zoom(this.src)">款式 H</div>
+            </div>
+            <div style="margin-top:60px; text-align:center;">
+                <a href="https://line.me/ti/p/nZJmE8-b6X" class="cta-gold">💬 聯繫專員代辦致意</a>
+                <p style="margin-top:20px; font-size:0.75rem; color:#b0a8a0; letter-spacing:2px;">諮詢專線：0938-179858</p>
+            </div>
+        </section>
+    </div>
+
+    <nav>
+        <div class="nav-link active" onclick="go(this, 'layer-1')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>感念</span>
+        </div>
+        <div class="nav-link" onclick="go(this, 'layer-2')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>指引</span>
+        </div>
+        <div class="nav-link" onclick="go(this, 'layer-3')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>叮嚀</span>
+        </div>
+        <div class="nav-link" onclick="go(this, 'layer-4')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>致意</span>
+        </div>
+    </nav>
+</div>
+
+<div id="viewer" onclick="this.style.display='none'"><img id="v-img"></div>
+
+<script>
+    // [邏輯保護] 封裝導航行為
+    const _app = {
+        go: function(el, id) {
+            document.querySelectorAll('.layer').forEach(l => l.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('scroll-root').scrollTop = 0;
+            if(window.navigator.vibrate) window.navigator.vibrate(5);
+        },
+        zoom: function(s) {
+            document.getElementById('v-img').src = s;
+            document.getElementById('viewer').style.display = 'flex';
+        }
+    };
+    // 快捷對映
+    function go(e, i) { _app.go(e, i); }
+    function zoom(s) { _app.zoom(s); }
+    // 禁用偵錯行為
+    document.onkeydown = function(e) { if(e.keyCode == 123) return false; };
+</script>
+</body>
+</html>
