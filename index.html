@@ -16,7 +16,7 @@
             --paper: #fdfdfb; 
         }
 
-        /* 核心防禦：禁止左右滾動、禁止縮放 */
+        /* 核心硬化：絕對禁止溢出 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #0b0a09; font-family: 'Noto Serif TC', serif; position: fixed; }
 
@@ -27,7 +27,7 @@
             background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
-        /* 標題曜金流光動畫 */
+        /* 曜金流光標題動畫 */
         @keyframes goldGlow {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -39,9 +39,10 @@
         .tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
         .tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
 
-        /* 標題區塊 - 防超出優化 */
         header { padding: calc(env(safe-area-inset-top) + 35px) 15px 15px; text-align: center; flex-shrink: 0; z-index: 10; }
         .v-mark { font-family: 'Cinzel'; font-size: 9px; color: var(--gold); letter-spacing: 8px; font-weight: 700; display: block; margin-bottom: 8px; }
+        
+        /* 標題：自適應寬度與流光效果 */
         .v-title { 
             font-weight: 900; 
             font-size: clamp(18px, 6vw, 24px); 
@@ -52,11 +53,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: goldGlow 5s linear infinite;
-            max-width: 100%;
+            max-width: 95%;
             word-break: keep-all;
         }
 
-        /* 滾動內容區 */
         #scroller { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 20px 220px; z-index: 10; scroll-behavior: smooth; }
         #scroller::-webkit-scrollbar { display: none; }
 
@@ -72,12 +72,11 @@
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
         .divider span { font-family: 'Cinzel'; font-size: 9px; color: var(--gold); letter-spacing: 4px; font-weight: 700; }
 
-        /* 功能按鈕：複製與分享 */
+        /* 功能按鈕區 */
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .btn-action { background: #fff; border: 1px solid var(--gold-shimmer); padding: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 900; color: var(--gold-deep); text-decoration: none; border-radius: 4px; }
-        .btn-action svg { flex-shrink: 0; }
+        .btn-action { background: #fff; border: 1px solid var(--gold-shimmer); padding: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 900; color: var(--gold-deep); text-decoration: none; border-radius: 4px; cursor: pointer; }
 
-        /* 時間軸：絕對不跑版設計 */
+        /* 時間軸：硬化排版 */
         .info-panel { background: #fff; border: 1px solid var(--gold-shimmer); padding: 25px 15px; margin-bottom: 25px; border-radius: 4px; }
         .t-row { display: grid; grid-template-columns: 60px 35px 1fr; align-items: center; position: relative; height: 55px; }
         .t-row::after { content: ""; position: absolute; left: 77px; top: 38px; height: 28px; width: 1px; background: var(--gold-shimmer); }
@@ -86,7 +85,7 @@
         .t-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; justify-self: center; z-index: 2; outline: 4px solid #fff; }
         .t-event { font-size: 18px; font-weight: 900; color: var(--rich-cocoa); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* 花禮與底部服務區 */
+        /* 花禮區域 */
         .f-container { border: 1px solid var(--gold-shimmer); background: #fff; margin-top: 30px; border-radius: 4px; overflow: hidden; }
         .f-head { padding: 18px; display: flex; justify-content: space-between; align-items: center; background: #faf9f7; color: var(--gold-deep); font-weight: 900; cursor: pointer; font-size: 15px; }
         .f-grid { max-height: 0; opacity: 0; transition: 0.6s ease-out; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 8px; }
@@ -97,7 +96,7 @@
 
         .map-btn { display: block; text-align: center; padding: 18px; background: var(--rich-cocoa); color: #fff; text-decoration: none; font-weight: 900; letter-spacing: 3px; font-size: 16px; margin-top: 15px; border-radius: 4px; }
 
-        /* 底部導覽 */
+        /* 導覽列 */
         nav {
             position: absolute; bottom: 30px; left: 20px; right: 20px; height: 70px;
             background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -170,14 +169,16 @@
                     <div class="art-card" style="margin:0;"><img src="image/祥安資訊-板殯.png" onclick="Pop(this.src)"></div>
                     <div class="art-card" style="margin:0;"><img src="image/IMG_6325.jpg" onclick="Pop(this.src)"></div>
                 </div>
-                <a href="https://maps.app.goo.gl/X9yTid6vN8B2" class="map-btn">導航至奠禮會場</a>
+                <a href="https://maps.google.com/?q=新北市立殯儀館" class="map-btn">導航至奠禮會場</a>
             </div>
         </section>
 
         <section id="p3" class="page" style="display:none;">
             <div class="calligraphy">感恩厚誼</div>
             <div class="p-text" style="text-align: center; font-size: 17px;">
-                由衷感謝治喪期間各位長輩、親朋好友的慈悲關懷。您的陪伴皆化作暖流，支撐我們渡過這段艱難時刻。
+                這段日子，是家母留給我們最後的溫柔，也是各位長輩、親友用愛為我們撐起的守護。<br><br>
+                謝謝您們的溫暖問候與靜靜陪伴，那些曾在生命中交織的點滴，此時都化作支撐我們前行的力量。家母一生惜緣，今日得見諸位共聚送別，她在天之靈定會帶著微笑與寬慰。<br><br>
+                感恩這份厚誼，願這份溫情長存心中，亦祈願您與家人平安順心。
             </div>
             <div style="text-align: right; margin-top: 40px; padding-right: 5px;">
                 <p class="calligraphy" style="font-size: 38px; margin:0; text-align:right;">孝女 艿涵</p>
@@ -193,6 +194,8 @@
                     <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃D款.JPG"><div class="f-tag">$4,500</div></div>
                     <div class="f-item" onclick="Pop('image/花籃E款.JPG')"><img src="image/花籃E款.JPG"><div class="f-tag">$5,000</div></div>
                     <div class="f-item" onclick="Pop('image/花籃F款.JPG')"><img src="image/花籃F款.JPG"><div class="f-tag">$5,500</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃G款.JPG')"><img src="image/花籃G款.JPG"><div class="f-tag">$6,000</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃H款.JPG')"><img src="image/花籃H款.JPG"><div class="f-tag">$6,500</div></div>
                 </div>
             </div>
 
@@ -235,7 +238,7 @@
         const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1500);
     }
     function lineShare() {
-        const text = encodeURIComponent(`【高府蔡紳鈞老夫人 感恩追思】\n謹訂於民國115年1月14日舉行告別禮。\n網址：${SITE_URL}`);
+        const text = encodeURIComponent(`【高府蔡紳鈞老夫人 感恩追思】\n謹訂於民國115年1月14日舉行告別禮。\n詳情請見：${SITE_URL}`);
         window.location.href = `https://line.me/R/msg/text/?${text}`;
     }
 </script>
