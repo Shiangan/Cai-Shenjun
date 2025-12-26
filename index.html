@@ -239,17 +239,31 @@
         document.getElementById('lightbox').style.display = 'flex'; 
     }
 
+    // --- 根據您的要求更正分享訊息規格 ---
+    const shareMsg = `【追思奠禮 ‧ 高府蔡紳鈞老夫人】\n\n安靈地點(牌位區)：板橋殯儀館 35號\n奠禮日期：115年01月14日(三)\n奠禮會場：新北市立殯儀館 明道廳\n家奠禮：08:00\n公奠禮：08:40\n\n線上追思網址：${window.location.href.split('?')[0]}`;
+
     function copyInfo() {
-        const text = `【高府蔡紳鈞老夫人 感恩追思】\n時間：115/01/14 (三) 08:00家奠禮 08：40公奠禮\n地點：新北市立殯儀館 明道廳\n追思網址：${window.location.href.split('?')[0]}`;
-        navigator.clipboard.writeText(text).then(() => {
-            const t = document.getElementById('toast');
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2000);
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareMsg).then(showToast);
+        } else {
+            // 備用方案：確保在不支援剪貼簿 API 的環境也能運作
+            const ta = document.createElement("textarea"); 
+            ta.value = shareMsg;
+            document.body.appendChild(ta); 
+            ta.select(); 
+            document.execCommand('copy');
+            document.body.removeChild(ta); 
+            showToast();
+        }
     }
 
-function lineShare() {
-        const text = encodeURIComponent(`【高府蔡紳鈞老夫人 感恩追思】\n時間：115/01/14 (三) 08:00家奠禮 08：40公奠禮\n地點：新北市立殯儀館 明道廳\n詳情：${window.location.href.split('?')[0]}`);
-        window.location.href = `https://line.me/R/msg/text/?${text}`;
+    function showToast() {
+        const t = document.getElementById('toast');
+        t.style.display = 'block'; 
+        setTimeout(() => t.style.display = 'none', 2000);
+    }
+
+    function lineShare() {
+        window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(shareMsg)}`;
     }
 </script>
