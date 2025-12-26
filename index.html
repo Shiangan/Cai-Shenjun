@@ -52,6 +52,28 @@
             animation: goldGlow 5s linear infinite; max-width: 95%; word-break: keep-all;
         }
 
+        /* 新增：生平紀年樣式 */
+        .v-years {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: var(--gold-deep);
+            letter-spacing: 4px;
+            margin-top: 10px;
+            font-weight: 400;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .v-years::before, .v-years::after {
+            content: "";
+            width: 30px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-shimmer));
+        }
+        .v-years::after { background: linear-gradient(270deg, transparent, var(--gold-shimmer)); }
+
         #scroller { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 20px 220px; z-index: 10; scroll-behavior: smooth; }
         #scroller::-webkit-scrollbar { display: none; }
 
@@ -118,6 +140,7 @@
     <header>
         <span class="v-mark">IN LOVING MEMORY</span>
         <div class="v-title">高府蔡紳鈞老夫人 感恩追思</div>
+        <div class="v-years">1948 - 2025</div>
     </header>
 
     <div id="scroller">
@@ -156,7 +179,7 @@
                     <div class="art-card" style="margin:0;"><img src="image/祥安資訊-板殯.png" onclick="Pop(this.src)"></div>
                     <div class="art-card" style="margin:0;"><img src="image/IMG_6325.PNG" onclick="Pop(this.src)"></div>
                 </div>
-                <a href="https://maps.app.goo.gl/U5sffqprdTGmqjUv8?g_st=ic" class="map-btn">導航至奠禮會場</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=新北市立殯儀館+明道廳" class="map-btn">導航至奠禮會場</a>
             </div>
         </section>
 
