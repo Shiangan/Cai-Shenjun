@@ -248,10 +248,8 @@
         });
     }
 
-    function lineShare() {
-        const text = encodeURIComponent(`【高府蔡紳鈞老夫人 感恩追思】\n謹訂於11`【高府蔡紳鈞老夫人 感恩追思】\n時間：115/01/14 (三) 08:00家奠禮 08：40公奠禮\n地點：新北市立殯儀館 明道廳\n追思網址：${window.location.href.split('?')[0]}`;
+function lineShare() {
+        const text = encodeURIComponent(`【高府蔡紳鈞老夫人 感恩追思】\n時間：115/01/14 (三) 08:00家奠禮 08：40公奠禮\n地點：新北市立殯儀館 明道廳\n詳情：${window.location.href.split('?')[0]}`);
         window.location.href = `https://line.me/R/msg/text/?${text}`;
     }
 </script>
-</body>
-</html>
