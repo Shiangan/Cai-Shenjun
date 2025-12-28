@@ -2,7 +2,7 @@
 <html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>高府蔡紳鈞老夫人 感恩追思</title>
     
     <meta property="og:title" content="高府蔡紳鈞老夫人 感恩追思">
@@ -103,10 +103,35 @@
         .n-link.active { color: var(--gold-deep); font-size: 17px; }
 
         #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 5000; display: none; border: 1px solid var(--gold); }
-        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 6000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        #l-img { max-width: 100%; max-height: 85vh; border: 2px solid #fff; }
-    </style>
+       #lightbox { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.95); 
+    z-index: 6000; 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    overflow: auto; /* 允許大圖超出時可以捲動 */
+    cursor: zoom-out;
+}
+
+#l-img { 
+    max-width: 95%; 
+    max-height: 85vh; 
+    border: 2px solid #fff; 
+    transition: transform 0.3s ease; /* 縮放時的平滑動畫 */
+    cursor: zoom-in;
+}
+
+/* 當圖片被放大時的狀態 */
+#l-img.zoomed {
+    transform: scale(2); /* 放大兩倍，您可以根據需要調整 */
+    max-height: none;
+    max-width: none;
+}
+</style>
 </head>
+    
 <body onclick="playAmbient()">
 
 <audio id="cello" loop preload="auto"><source src="Misson Part 1.mp3" type="audio/mpeg"></audio>
@@ -210,7 +235,10 @@
 </div>
 
 <div id="toast">資訊已成功複製</div>
-<div id="lightbox" onclick="this.style.display='none'"><img id="l-img" src=""></div>
+<div id="lightbox" onclick="closePop()">
+    <img id="l-img" src="" onclick="toggleZoom(event)">
+</div>
+
 
 <script>
     const audio = document.getElementById('cello');
@@ -225,10 +253,27 @@
         playAmbient();
     }
 
-    function Pop(s){ 
-        document.getElementById('l-img').src = s; 
-        document.getElementById('lightbox').style.display = 'flex'; 
-    }
+    // 彈出視窗
+function Pop(s){ 
+    const img = document.getElementById('l-img');
+    img.src = s; 
+    img.classList.remove('zoomed'); // 每次打開重置為小圖
+    document.getElementById('lightbox').style.display = 'flex'; 
+}
+
+// 點擊圖片切換放大/縮小
+function toggleZoom(e) {
+    e.stopPropagation(); // 防止點擊圖片時觸發背景的關閉事件
+    const img = e.target;
+    img.classList.toggle('zoomed');
+    img.style.cursor = img.classList.contains('zoomed') ? 'zoom-out' : 'zoom-in';
+}
+
+// 關閉視窗
+function closePop() {
+    document.getElementById('lightbox').style.display = 'none';
+}
+
 
     // 格式化分享訊息內容
     function getShareMsg() {
