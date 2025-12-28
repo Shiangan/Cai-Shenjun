@@ -2,7 +2,7 @@
 <html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>高府蔡紳鈞老夫人 感恩追思</title>
     
     <meta property="og:title" content="高府蔡紳鈞老夫人 感恩追思">
@@ -83,7 +83,7 @@
         .time-txt { font-size: 22px; color: var(--ink); font-weight: 900; width: 110px; text-align: left; letter-spacing: 4px; }
         .btn-luxe { border: 1px solid var(--gold); padding: 18px; text-align: center; color: var(--ink); font-weight: 900; letter-spacing: 4px; font-size: 14px; background: #fff; margin-bottom: 15px; display: block; text-decoration: none; border-radius: 4px; cursor: pointer; }
 
-        /* 花禮收納區 */
+        /* 花禮收納區 (8張圖完美無缺) */
         .f-container { border: 1px solid var(--gold-shimmer); background: #fff; margin-top: 30px; border-radius: 4px; overflow: hidden; }
         .f-head { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: #faf9f7; cursor: pointer; border-bottom: 1px solid #eee; }
         .f-grid { max-height: 0; opacity: 0; transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow: hidden; }
@@ -103,14 +103,14 @@
 
         #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); pointer-events: none; }
 
-        /* --- 燈箱極致修正：點擊放大模式 --- */
+        /* --- 燈箱極致修正：支援點擊切換放大看字 --- */
         #lightbox { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; 
-            display: none; overflow: auto; cursor: zoom-out; -webkit-overflow-scrolling: touch;
+            display: none; overflow: auto; cursor: pointer; -webkit-overflow-scrolling: touch;
         }
         #l-img-wrapper { 
             display: flex; justify-content: center; align-items: center; 
-            min-height: 100%; width: 100%; padding: 40px 20px;
+            min-height: 100%; width: 100%; padding: 40px 10px;
         }
         #l-img { 
             max-width: 100%; max-height: 80vh; 
@@ -118,12 +118,11 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             cursor: zoom-in; object-fit: contain;
         }
-        /* 放大狀態：不限制高度，寬度撐滿，讓長圖可以自然滑動 */
         #l-img.zoomed {
             max-height: none; width: 100%; 
             cursor: zoom-out; border: none;
         }
-        .close-btn { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; color: #fff; font-size: 35px; z-index: 9001; text-shadow: 0 0 10px #000; cursor: pointer; }
+        .close-btn { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; color: #fff; font-size: 35px; z-index: 9001; text-shadow: 0 0 10px #000; cursor: pointer; width: 44px; height: 44px; text-align: center; line-height: 44px; }
     </style>
 </head>
 <body onclick="playAmbient()">
@@ -171,8 +170,14 @@
                 <div class="time-group"><div class="time-num">08 : 40</div><div class="time-sep"></div><div class="time-txt">公奠禮</div></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-                <img src="image/祥安資訊-板殯.png" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
-                <img src="image/IMG_6325.PNG" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
+                <div class="art-card" style="margin-bottom:0;" onclick="Pop('image/祥安資訊-板殯.png')">
+                    <img src="image/祥安資訊-板殯.png">
+                    <p style="font-size:11px; color:var(--gold); margin-top:5px; text-align:center;">點擊放大地圖</p>
+                </div>
+                <div class="art-card" style="margin-bottom:0;" onclick="Pop('image/IMG_6325.PNG')">
+                    <img src="image/IMG_6325.PNG">
+                    <p style="font-size:11px; color:var(--gold); margin-top:5px; text-align:center;">點擊放大訃聞</p>
+                </div>
             </div>
             <a href="https://maps.google.com/?q=新北市立殯儀館" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">引導至奠禮會場</a>
         </section>
@@ -198,7 +203,7 @@
 
             <div class="f-container" id="f-box" style="margin-top: 50px;">
                 <div class="f-head" onclick="document.getElementById('f-box').classList.toggle('open')">
-                    <span style="font-size:17px; font-weight:900;">致意花禮參考 (代訂服務)</span>
+                    <span style="font-size:17px; font-weight:900; letter-spacing:1px;">致意花禮參考 (代訂服務)</span>
                     <span class="arrow">▼</span>
                 </div>
                 <div class="f-grid">
@@ -206,17 +211,17 @@
                     <div class="f-item" onclick="Pop('image/花籃B款.JPG')"><img src="image/花籃B款.JPG"><div class="f-tag">B款 $3,000/對</div></div>
                     <div class="f-item" onclick="Pop('image/花籃C款.JPG')"><img src="image/花籃C款.JPG"><div class="f-tag">C款 $3,500/對</div></div>
                     <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃D款.JPG"><div class="f-tag">D款 $4,500/對</div></div>
-                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃E款.JPG"><div class="f-tag">E款 $5,000/對</div></div>
-                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃F款.JPG"><div class="f-tag">F款 $5,500/對</div></div>
-                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃G款.JPG"><div class="f-tag">G款 $6,000/對</div></div>
-                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃H款.JPG"><div class="f-tag">H款 $6,500/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃E款.JPG')"><img src="image/花籃E款.JPG"><div class="f-tag">E款 $5,000/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃F款.JPG')"><img src="image/花籃F款.JPG"><div class="f-tag">F款 $5,500/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃G款.JPG')"><img src="image/花籃G款.JPG"><div class="f-tag">G款 $6,000/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃H款.JPG')"><img src="image/花籃H款.JPG"><div class="f-tag">H款 $6,500/對</div></div>
                 </div>
             </div>
 
-            <div style="margin-top:40px; text-align:center; border: 2px solid var(--gold); padding: 25px; border-radius: 4px;">
-                <div style="font-size: 20px; font-weight: 900;">祥安生命有限公司</div>
-                <div style="font-size: 16px; color: var(--gold-deep); margin: 8px 0;">陳柏元 0938-179-858</div>
-                <a href="https://line.me/ti/p/nZJmE8-b6X" style="display:block; background:var(--rich-cocoa); color:#fff; padding:18px; margin-top:20px; text-decoration:none; border-radius:50px; font-weight:900;">LINE 線上代訂服務</a>
+            <div style="margin-top:40px; text-align:center; border: 2px solid var(--gold); padding: 30px 20px; border-radius: 4px; background:#fff;">
+                <div style="font-size: 21px; font-weight: 900; color:var(--ink);">祥安生命有限公司</div>
+                <div style="font-size: 17px; color: var(--gold-deep); margin: 8px 0; font-weight:700;">陳柏元 0938-179-858</div>
+                <a href="https://line.me/ti/p/nZJmE8-b6X" style="display:block; background:var(--rich-cocoa); color:#fff; padding:18px; margin-top:20px; text-decoration:none; border-radius:50px; font-weight:900; letter-spacing:2px;">LINE 線上代訂服務</a>
             </div>
         </section>
     </div>
@@ -231,7 +236,7 @@
 <div id="toast">奠禮資訊已成功複製</div>
 
 <div id="lightbox" onclick="closePop()">
-    <div class="close-btn">×</div>
+    <div class="close-btn" onclick="closePop()">×</div>
     <div id="l-img-wrapper">
         <img id="l-img" src="" onclick="toggleZoom(event)">
     </div>
@@ -257,17 +262,18 @@
         img.classList.remove('zoomed'); 
         box.style.display = 'block'; 
         box.scrollTo(0,0);
+        document.body.style.overflow = 'hidden';
     }
 
     function toggleZoom(e) {
         e.stopPropagation();
         const img = e.target;
         img.classList.toggle('zoomed');
-        // 放大後若想讓用戶立即看到中間，可不處理，讓用戶自行滑動
     }
 
     function closePop() {
         document.getElementById('lightbox').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     function getShareMsg() {
