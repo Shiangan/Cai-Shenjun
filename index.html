@@ -14,40 +14,29 @@
     
     <style>
         :root { 
-            --gold: #b08d57; 
-            --gold-shimmer: #eaddca; 
-            --gold-deep: #8e6d3d;
-            --rich-cocoa: #3d3935; 
-            --paper: #fdfdfb; 
-            --ink: #1a1a1a;
+            --gold: #b08d57; --gold-shimmer: #eaddca; --gold-deep: #8e6d3d;
+            --rich-cocoa: #3d3935; --paper: #fdfdfb; --ink: #1a1a1a;
         }
 
-        /* 系統級鎖定：防止 Android 下拉刷新與 iOS 橡皮筋回彈 */
+        /* 全局系統鎖定 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         html, body { 
-            width: 100%; height: 100%; 
-            overflow: hidden; /* 鎖定底層，不讓整個網頁亂跑 */
-            background: #0b0a09; 
-            font-family: 'Noto Serif TC', serif;
-            overscroll-behavior-y: none; /* 禁止 Android 下拉刷新 */
-            position: fixed; /* iOS 額外鎖定 */
+            width: 100%; height: 100%; overflow: hidden; 
+            background: #0b0a09; font-family: 'Noto Serif TC', serif;
+            overscroll-behavior-y: none; position: fixed;
         }
 
-        /* 主容器：固定寬度、適配安全區域 */
         #app-wrapper {
             width: 100%; max-width: 500px; height: 100dvh; margin: 0 auto;
             background: var(--paper); display: flex; flex-direction: column; position: relative;
             background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
             box-shadow: 0 0 100px rgba(0,0,0,0.6);
-            border-left: 1px solid rgba(176,141,87,0.2);
-            border-right: 1px solid rgba(176,141,87,0.2);
-            /* 適配 iOS 安全區 */
+            border-left: 1px solid rgba(176,141,87,0.1); border-right: 1px solid rgba(176,141,87,0.1);
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* 裝飾框線 */
+        /* 裝飾元件 */
         .frame-border { position: absolute; inset: 12px; border: 1px solid rgba(176,141,87,0.15); pointer-events: none; z-index: 50; }
         .corner { position: absolute; width: 35px; height: 35px; border: 2.5px solid var(--gold); z-index: 51; opacity: 0.6; }
         .tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
@@ -66,7 +55,7 @@
         /* 分頁系統 */
         #content-area { flex: 1; position: relative; overflow: hidden; }
         .page { 
-            position: absolute; inset: 0; padding: 0 25px 120px; 
+            position: absolute; inset: 0; padding: 0 25px 130px; 
             overflow-y: auto; -webkit-overflow-scrolling: touch;
             opacity: 0; transform: translate3d(0, 20px, 0); pointer-events: none;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -74,7 +63,6 @@
         .page.active { opacity: 1; transform: translate3d(0, 0, 0); pointer-events: auto; z-index: 10; }
         .page::-webkit-scrollbar { display: none; }
 
-        /* 內容樣式 */
         .calligraphy { font-family: 'Ma Shan Zheng', cursive; font-size: clamp(48px, 12vw, 60px); color: var(--gold); text-align: center; margin-bottom: 20px; }
         .art-card { border: 1px solid var(--gold-shimmer); padding: 6px; background: #fff; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.06); cursor: pointer; }
         .art-card img { width: 100%; display: block; }
@@ -85,16 +73,14 @@
         .divider span { font-family: 'Cinzel'; font-size: 10px; color: var(--gold-deep); letter-spacing: 5px; font-weight: 900; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-shimmer), transparent); }
 
-        /* 奠禮詳情 */
+        /* 奠禮詳情區 */
         .info-cell { text-align: center; margin-bottom: 40px; }
         .info-tag { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); letter-spacing: 8px; margin-bottom: 8px; text-transform: uppercase; }
         .info-val { font-size: 25px; color: var(--ink); font-weight: 900; }
-        
-        .time-group { display: flex; align-items: center; justify-content: center; margin: 15px 0; height: auto; padding: 5px 0; }
+        .time-group { display: flex; align-items: center; justify-content: center; margin: 15px 0; }
         .time-num { font-family: 'Montserrat'; font-size: 28px; color: var(--gold-deep); width: 110px; text-align: right; font-weight: 700; }
         .time-sep { width: 1px; height: 30px; background: var(--gold); margin: 0 25px; opacity: 0.3; }
         .time-txt { font-size: 22px; color: var(--ink); font-weight: 900; width: 110px; text-align: left; letter-spacing: 4px; }
-
         .btn-luxe { border: 1px solid var(--gold); padding: 18px; text-align: center; color: var(--ink); font-weight: 900; letter-spacing: 4px; font-size: 14px; background: #fff; margin-bottom: 15px; display: block; text-decoration: none; border-radius: 4px; cursor: pointer; }
 
         /* 花禮收納區 */
@@ -103,35 +89,38 @@
         .f-grid { max-height: 0; opacity: 0; transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow: hidden; }
         .f-container.open .f-grid { max-height: 4000px; opacity: 1; padding: 15px 12px; }
         .f-item { border: 1px solid #f0f0f0; background: #fff; text-align: center; padding: 5px; }
-        .f-item img { width: 100%; height: auto; display: block; object-fit: contain; }
+        .f-item img { width: 100%; height: auto; display: block; }
         .f-tag { background: var(--rich-cocoa); color: #fff; font-size: 12px; padding: 6px 0; font-family: 'Montserrat'; font-weight: 700; margin-top: 5px; }
 
-        /* 導覽列：適配 iOS 安全區域 */
+        /* 底部導覽列 */
         nav {
-            position: absolute; bottom: calc(env(safe-area-inset-bottom) + 20px); left: 20px; right: 20px; height: 70px;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 40px; display: flex; align-items: center; z-index: 1000;
-            border: 1px solid var(--gold-shimmer); box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+            position: absolute; bottom: calc(env(safe-area-inset-bottom) + 20px); left: 20px; right: 20px; height: 75px;
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(15px); border-radius: 40px; display: flex; align-items: center; z-index: 1000;
+            border: 1px solid var(--gold-shimmer); box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
         .n-link { flex: 1; text-align: center; text-decoration: none; color: #bbb; font-size: 14px; font-weight: 900; letter-spacing: 1px; }
-        .n-link.active { color: var(--gold-deep); font-size: 16px; }
+        .n-link.active { color: var(--gold-deep); font-size: 17px; }
 
-        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 5000; display: none; border: 1px solid var(--gold); }
-        
-        /* 極致優化的燈箱樣式：支援雙指縮放與滾動 */
+        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); }
+
+        /* --- 燈箱極致修正：縮放與捲動 --- */
         #lightbox { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 6000; 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; 
             display: none; justify-content: center; align-items: center; 
             overflow: auto; cursor: zoom-out; -webkit-overflow-scrolling: touch;
         }
+        #l-img-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100%; width: 100%; padding: 20px; }
         #l-img { 
-            max-width: 95%; max-height: 85vh; border: 1px solid #fff; 
-            transition: transform 0.3s cubic-bezier(0.1, 0.7, 1.0, 0.1); 
-            cursor: zoom-in; will-change: transform;
-            touch-action: pinch-zoom; /* 允許手機手勢捏合縮放 */
+            max-width: 100%; max-height: 85vh; /* 預設符合螢幕高度 */
+            border: 1px solid #fff; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: zoom-in; will-change: transform; touch-action: pinch-zoom;
         }
         #l-img.zoomed {
-            transform: scale(1.8); max-height: none; max-width: none; margin: 40% auto;
+            transform: scale(2.0); /* 點擊放大 2 倍 */
+            max-height: none; max-width: none; cursor: zoom-out;
+            margin: 50% 0; /* 確保長圖放大後可以捲動 */
         }
+        .close-btn { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; color: #fff; font-size: 35px; z-index: 9001; text-shadow: 0 0 10px #000; cursor: pointer; }
     </style>
 </head>
 <body onclick="playAmbient()">
@@ -182,7 +171,7 @@
                 <img src="image/祥安資訊-板殯.png" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
                 <img src="image/IMG_6325.PNG" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
             </div>
-            <a href="https://maps.app.goo.gl/3X25V8R79TidvWk6A" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">引導至奠禮會場</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=新北市立殯儀館" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">引導至奠禮會場</a>
         </section>
 
         <section id="p3" class="page">
@@ -234,7 +223,10 @@
 
 <div id="toast">資訊已成功複製</div>
 <div id="lightbox" onclick="closePop()">
-    <img id="l-img" src="" onclick="toggleZoom(event)">
+    <div class="close-btn">&times;</div>
+    <div id="l-img-wrapper">
+        <img id="l-img" src="" onclick="toggleZoom(event)">
+    </div>
 </div>
 
 <script>
@@ -250,20 +242,16 @@
         playAmbient();
     }
 
-    // 彈出視窗
     function Pop(s){ 
         const img = document.getElementById('l-img');
         img.src = s; 
         img.classList.remove('zoomed'); 
-        document.getElementById('lightbox').style.display = 'flex'; 
+        document.getElementById('lightbox').style.display = 'block'; 
     }
 
-    // 點擊圖片切換縮放
     function toggleZoom(e) {
         e.stopPropagation();
-        const img = e.target;
-        img.classList.toggle('zoomed');
-        img.style.cursor = img.classList.contains('zoomed') ? 'zoom-out' : 'zoom-in';
+        e.target.classList.toggle('zoomed');
     }
 
     function closePop() {
@@ -271,28 +259,23 @@
     }
 
     function getShareMsg() {
-        return `【追思奠禮 ‧ 高府蔡紳鈞老夫人】\n\n安靈地點：板橋殯儀館 35號\n奠禮日期：115年01月14日(三)\n奠禮會場：新北市立殯儀館 明道廳\n家奠禮：08:00\n公奠禮：08:40\n\n線上追思網址：${window.location.href}`;
+        return `【追思奠禮 ‧ 高府蔡紳鈞老夫人】\n\n安靈地點：板橋殯儀館 35號\n奠禮日期：115年01月14日(三)\n奠禮會場：新北市立殯儀館 明道廳\n\n線上追思網址：${window.location.href}`;
     }
 
     function copy() {
-        const msg = getShareMsg();
         const ta = document.createElement("textarea");
-        ta.value = msg;
+        ta.value = getShareMsg();
         document.body.appendChild(ta);
         ta.select();
-        ta.setSelectionRange(0, 99999);
-        try {
-            document.execCommand('copy');
-            const t = document.getElementById('toast');
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2000);
-        } catch (err) { console.error('複製失敗'); }
+        document.execCommand('copy');
         document.body.removeChild(ta);
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 2000);
     }
 
     function share() {
-        const msg = getShareMsg();
-        window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(msg)}`;
+        window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(getShareMsg())}`;
     }
 </script>
 </body>
