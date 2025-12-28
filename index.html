@@ -101,24 +101,27 @@
         .n-link { flex: 1; text-align: center; text-decoration: none; color: #bbb; font-size: 14px; font-weight: 900; letter-spacing: 1px; }
         .n-link.active { color: var(--gold-deep); font-size: 17px; }
 
-        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); }
+        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); pointer-events: none; }
 
-        /* --- 燈箱極致修正：縮放與捲動 --- */
+        /* --- 燈箱極致修正：點擊放大模式 --- */
         #lightbox { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; 
-            display: none; justify-content: center; align-items: center; 
-            overflow: auto; cursor: zoom-out; -webkit-overflow-scrolling: touch;
+            display: none; overflow: auto; cursor: zoom-out; -webkit-overflow-scrolling: touch;
         }
-        #l-img-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100%; width: 100%; padding: 20px; }
+        #l-img-wrapper { 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100%; width: 100%; padding: 40px 20px;
+        }
         #l-img { 
-            max-width: 100%; max-height: 85vh; /* 預設符合螢幕高度 */
-            border: 1px solid #fff; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            cursor: zoom-in; will-change: transform; touch-action: pinch-zoom;
+            max-width: 100%; max-height: 80vh; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: zoom-in; object-fit: contain;
         }
+        /* 放大狀態：不限制高度，寬度撐滿，讓長圖可以自然滑動 */
         #l-img.zoomed {
-            transform: scale(2.0); /* 點擊放大 2 倍 */
-            max-height: none; max-width: none; cursor: zoom-out;
-            margin: 50% 0; /* 確保長圖放大後可以捲動 */
+            max-height: none; width: 100%; 
+            cursor: zoom-out; border: none;
         }
         .close-btn { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; color: #fff; font-size: 35px; z-index: 9001; text-shadow: 0 0 10px #000; cursor: pointer; }
     </style>
@@ -149,8 +152,8 @@
 
         <section id="p2" class="page">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 45px;">
-                <div class="btn-luxe" onclick="copy()">複製資訊</div>
-                <div class="btn-luxe" onclick="share()">分享親友</div>
+                <div class="btn-luxe" onclick="copy()">複製奠禮資訊</div>
+                <div class="btn-luxe" onclick="share()">分享予親友</div>
             </div>
             <div class="info-cell">
                 <p class="info-tag">Current Venue</p>
@@ -171,7 +174,7 @@
                 <img src="image/祥安資訊-板殯.png" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
                 <img src="image/IMG_6325.PNG" style="width:100%; border:1px solid var(--gold-shimmer);" onclick="Pop(this.src)">
             </div>
-            <a href="https://www.google.com/maps/search/?api=1&query=新北市立殯儀館" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">引導至奠禮會場</a>
+            <a href="https://maps.google.com/?q=新北市立殯儀館" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">引導至奠禮會場</a>
         </section>
 
         <section id="p3" class="page">
@@ -203,6 +206,10 @@
                     <div class="f-item" onclick="Pop('image/花籃B款.JPG')"><img src="image/花籃B款.JPG"><div class="f-tag">B款 $3,000/對</div></div>
                     <div class="f-item" onclick="Pop('image/花籃C款.JPG')"><img src="image/花籃C款.JPG"><div class="f-tag">C款 $3,500/對</div></div>
                     <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃D款.JPG"><div class="f-tag">D款 $4,500/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃E款.JPG"><div class="f-tag">E款 $5,000/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃F款.JPG"><div class="f-tag">F款 $5,500/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃G款.JPG"><div class="f-tag">G款 $6,000/對</div></div>
+                    <div class="f-item" onclick="Pop('image/花籃D款.JPG')"><img src="image/花籃H款.JPG"><div class="f-tag">H款 $6,500/對</div></div>
                 </div>
             </div>
 
@@ -221,9 +228,10 @@
     </nav>
 </div>
 
-<div id="toast">資訊已成功複製</div>
+<div id="toast">奠禮資訊已成功複製</div>
+
 <div id="lightbox" onclick="closePop()">
-    <div class="close-btn">&times;</div>
+    <div class="close-btn">×</div>
     <div id="l-img-wrapper">
         <img id="l-img" src="" onclick="toggleZoom(event)">
     </div>
@@ -244,14 +252,18 @@
 
     function Pop(s){ 
         const img = document.getElementById('l-img');
+        const box = document.getElementById('lightbox');
         img.src = s; 
         img.classList.remove('zoomed'); 
-        document.getElementById('lightbox').style.display = 'block'; 
+        box.style.display = 'block'; 
+        box.scrollTo(0,0);
     }
 
     function toggleZoom(e) {
         e.stopPropagation();
-        e.target.classList.toggle('zoomed');
+        const img = e.target;
+        img.classList.toggle('zoomed');
+        // 放大後若想讓用戶立即看到中間，可不處理，讓用戶自行滑動
     }
 
     function closePop() {
